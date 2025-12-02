@@ -22,8 +22,7 @@
   <div id="temp">Loading...</div>
   <script>
     async function loadTemperature() {
-      const apiKey = "YOUR_API_KEY"; // Replace with a valid OpenWeatherMap API key
-      const url = `https://api.openweathermap.org/data/2.5/weather?q=Amman,JO&units=metric&appid=${apiKey}`;
+      const url = "https://api.open-meteo.com/v1/forecast?latitude=31.9539&longitude=35.9106&current_weather=true";
 
       try {
         const response = await fetch(url);
@@ -32,12 +31,12 @@
         }
 
         const data = await response.json();
-        const temp = data.main.temp.toFixed(1);
-        const time = new Date().toLocaleTimeString();
+        const { temperature, time } = data.current_weather;
+        const localTime = new Date(time).toLocaleTimeString();
 
-        document.getElementById("temp").textContent = `Temperature: ${temp}°C (updated ${time})`;
+        document.getElementById("temp").textContent = `Temperature: ${temperature.toFixed(1)}°C (updated ${localTime})`;
       } catch (error) {
-        document.getElementById("temp").textContent = "Unable to load temperature. Check API key.";
+        document.getElementById("temp").textContent = "Unable to load temperature.";
         console.error(error);
       }
     }

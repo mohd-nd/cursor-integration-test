@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Amman Temperature</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 2rem;
+      text-align: center;
+      background: #f2f6fb;
+      color: #222;
+    }
+    #temp {
+      font-size: 2rem;
+      margin-top: 1rem;
+    }
+  </style>
+</head>
+<body>
+  <h1>Current Temperature in Amman, Jordan</h1>
+  <div id="temp">Loading...</div>
+  <script>
+    async function loadTemperature() {
+      const apiKey = "YOUR_API_KEY"; // Replace with a valid OpenWeatherMap API key
+      const url = `https://api.openweathermap.org/data/2.5/weather?q=Amman,JO&units=metric&appid=${apiKey}`;
+
+      try {
+        const response = await fetch(url);
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+
+        const data = await response.json();
+        const temp = data.main.temp.toFixed(1);
+        const time = new Date().toLocaleTimeString();
+
+        document.getElementById("temp").textContent = `Temperature: ${temp}°C (updated ${time})`;
+      } catch (error) {
+        document.getElementById("temp").textContent = "Unable to load temperature. Check API key.";
+        console.error(error);
+      }
+    }
+
+    loadTemperature();
+  </script>
+</body>
+</html>

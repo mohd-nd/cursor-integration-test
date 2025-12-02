@@ -1,0 +1,44 @@
+@page
+@model CursorSubmissionApp.Pages.IndexModel
+@{
+    ViewData["Title"] = "Cursor Cloud Agent Submission";
+}
+
+<section class="hero">
+    <h1>Cursor Cloud Agent Submission Portal</h1>
+    <p>Provide the prompt, repository details, and any supporting images to create a job for the Cursor Cloud Agent API.</p>
+</section>
+
+<form method="post" enctype="multipart/form-data" class="submission-form">
+    <div asp-validation-summary="ModelOnly" class="validation-summary"></div>
+
+    <label asp-for="Input.PromptMessage"></label>
+    <textarea asp-for="Input.PromptMessage" rows="5" placeholder="Describe the task, expectations, and context..."></textarea>
+    <span asp-validation-for="Input.PromptMessage"></span>
+
+    <label asp-for="Input.RepositoryUrl"></label>
+    <input asp-for="Input.RepositoryUrl" placeholder="https://github.com/org/repo" />
+    <span asp-validation-for="Input.RepositoryUrl"></span>
+
+    <label asp-for="Input.Branch"></label>
+    <input asp-for="Input.Branch" placeholder="feature/my-awesome-branch" />
+    <span asp-validation-for="Input.Branch"></span>
+
+    <label for="attachments">Attach reference images (optional)</label>
+    <input type="file" id="attachments" name="Attachments" accept="image/*" multiple />
+    <span asp-validation-for="Attachments"></span>
+
+    <button type="submit">Send to Cursor Agent</button>
+</form>
+
+@if (Model.Submitted)
+{
+    <section class="result @(Model.ApiResponse!.Success ? "success" : "error")">
+        <h2>@(Model.ApiResponse.Success ? "Submission sent" : "Submission failed")</h2>
+        <p>@Model.ApiResponse.Message</p>
+    </section>
+}
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

@@ -1,0 +1,62 @@
+<main class="container">
+  <div class="weather-card">
+    <div class="header">
+      <h1>🇯🇴 Amman, Jordan</h1>
+      <p class="subtitle">Current Weather</p>
+    </div>
+
+    @if (loading()) {
+      <div class="loading">
+        <div class="spinner"></div>
+        <p>Loading weather data...</p>
+      </div>
+    }
+
+    @if (error()) {
+      <div class="error">
+        <p>{{ error() }}</p>
+        <button (click)="fetchWeather()" class="retry-btn">Try Again</button>
+      </div>
+    }
+
+    @if (weather() && !loading()) {
+      <div class="weather-content">
+        <div class="weather-icon">
+          {{ getWeatherIcon(weather()!.weathercode) }}
+        </div>
+        
+        <div class="temperature">
+          <span class="temp-value">{{ weather()!.temperature }}</span>
+          <span class="temp-unit">°C</span>
+        </div>
+        
+        <div class="weather-description">
+          {{ getWeatherDescription(weather()!.weathercode) }}
+        </div>
+        
+        <div class="weather-details">
+          <div class="detail">
+            <span class="detail-icon">💨</span>
+            <span class="detail-label">Wind Speed</span>
+            <span class="detail-value">{{ weather()!.windspeed }} km/h</span>
+          </div>
+        </div>
+
+        @if (lastUpdated()) {
+          <div class="last-updated">
+            Last updated: {{ lastUpdated() | date:'medium' }}
+          </div>
+        }
+        
+        <button (click)="fetchWeather()" class="refresh-btn">
+          🔄 Refresh
+        </button>
+      </div>
+    }
+  </div>
+
+  <footer class="footer">
+    <p>Powered by <a href="https://open-meteo.com/" target="_blank" rel="noopener">Open-Meteo API</a></p>
+    <p class="api-note">Free weather API - No API key required</p>
+  </footer>
+</main>

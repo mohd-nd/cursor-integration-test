@@ -1,5 +1,7 @@
 name: Deploy Angular App on Keyword Commit
 
+permissions:
+  contents: write   # REQUIRED for gh-pages deployment
 on:
   push:
     branches:

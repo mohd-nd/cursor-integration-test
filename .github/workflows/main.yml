@@ -1,11 +1,12 @@
 name: Deploy Angular App on Keyword Commit
 
 permissions:
-  contents: write   # REQUIRED for gh-pages deployment
+  contents: write
+
 on:
   push:
     branches:
-      - addWEBPAGE   # Only triggers on this branch
+      - addWEBPAGE   # Only run on this branch
 
 jobs:
   deploy:
@@ -14,7 +15,6 @@ jobs:
 
     steps:
       - name: Checkout repository
-      # Pulls your repo including the "amman-weather" folder
         uses: actions/checkout@v4
 
       - name: Setup Node.js
@@ -27,7 +27,7 @@ jobs:
         working-directory: ./amman-weather
 
       - name: Build Angular
-        run: npm run build
+        run: ng build --base-href "/cursor-integration-test/"
         working-directory: ./amman-weather
 
       - name: Deploy to GitHub Pages
@@ -35,6 +35,3 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./amman-weather/dist/amman-weather
-
-
-

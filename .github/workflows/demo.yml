@@ -1,7 +1,7 @@
 name: Deploy Angular to GitHub Pages
 
 on:
-  pull_request:
+  push:
     branches:
       - addWEBPAGE
 

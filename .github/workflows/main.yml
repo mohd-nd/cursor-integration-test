@@ -24,15 +24,16 @@ jobs:
 
       - name: Install dependencies
         run: npm install
-        working-directory: ./amman-weather
+        working-directory: ./AMMAN-WEATHER
 
       - name: Build Angular
         run: npm run build --prod
-        working-directory: ./amman-weather
+        working-directory: ./AMMAN-WEATHER
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./amman-weather/dist/amman-weather
+          publish_dir: ./AMMAN-WEATHER/dist
+
 

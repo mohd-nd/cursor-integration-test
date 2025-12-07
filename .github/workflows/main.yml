@@ -1,0 +1,35 @@
+name: Deploy Angular App on Keyword Commit
+
+on:
+  push:
+    branches:
+      - addWEBPAGE   # Only triggers on this branch
+
+jobs:
+  deploy:
+    if: contains(github.event.head_commit.message, 'deploy-now')
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+      # Pulls your repo including the "amman-weather" folder
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install dependencies
+        run: npm install
+        working-directory: ./amman-weather
+
+      - name: Build Angular
+        run: npm run build --prod
+        working-directory: ./amman-weather
+
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./amman-weather/dist

@@ -1,0 +1,44 @@
+name: Deploy Angular App on Keyword Commit
+
+permissions:
+  contents: write
+
+on:
+  push:
+    branches:
+      - addWEBPAGE
+
+jobs:
+  deploy:
+    if: contains(github.event.head_commit.message, 'deploy-now')
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install Angular CLI
+        run: npm install -g @angular/cli
+
+      - name: Install dependencies
+        run: npm install
+        working-directory: ./amman-weather
+
+      - name: Build Angular (base href must match repo name)
+        run: ng build --base-href "/amman-weather/"
+        working-directory: ./amman-weather 
+        
+      - name: Disable Jekyll
+        run: echo "" > ./amman-weather/dist/amman-weather/browser/.nojekyll
+
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./amman-weather/dist/amman-weather/browser
+          enable_jekyll: false
